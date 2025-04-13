@@ -9,7 +9,7 @@ const Home = () => (
   <div className="container">
     <h1>Products</h1>
     <div className="product-grid">
-      {products.slice(startIndex, startIndex + 10).map((product) => (
+      {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
