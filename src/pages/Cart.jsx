@@ -31,7 +31,7 @@ const Cart = () => {
               >
                 <div className="cart-image"></div>
                 <div className="cart-details">
-                  <h3>{item.name}</h3>
+                  <h3>{item.title}</h3>
                   <p>${item.price}</p>
                   <div className="cart-qty">
                     <button onClick={() => updateQuantity(item, 'decrease')}>-</button>
