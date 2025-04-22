@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
@@ -7,8 +7,17 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
-  
+  const [cart, setCart] = useState(() => {
+    // Get cart from localStorage on first load
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  // Sync to localStorage on cart update
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   const addToCart = (product) => {
     setCart((prev) => {
       const existingItem = prev.find(item => item.id === product.id);
@@ -35,12 +44,13 @@ export const CartProvider = ({ children }) => {
         .filter(Boolean); // Remove nulls
     });
   };
-  const getTotalItemCount = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
-  };
 
   const removeFromCart = (product) => {
     setCart(prev => prev.filter(item => item.id !== product.id));
+  };
+
+  const getTotalItemCount = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
