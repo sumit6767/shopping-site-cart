@@ -32,7 +32,7 @@ function Recommended() {
         if (!res.ok) throw new Error("Network response was not ok");
 
         const data = await res.json();
-        setRecommended(data?.Promotion || []);
+        setRecommended((data?.Promotion).map(data => {data.id = data.product_id; return data;}) || []);
       } catch (error) {
         console.error("Failed to fetch recommended products:", error);
       } finally {
@@ -41,8 +41,8 @@ function Recommended() {
     };
 
     fetchRecommended();
-  }, [cart]);
-
+  }, [cart.length]);
+  
   return (
     <div className="recommended">
       <h2>Recommended for You</h2>
@@ -54,7 +54,7 @@ function Recommended() {
       ) : (
         <div className="product-grid">
           {recommended.map((item) => (
-            <ProductCard key={item.id} product={item} />
+            <ProductCard key={item.product_id} product={item} />
           ))}
         </div>
       )}

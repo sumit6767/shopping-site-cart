@@ -261,3 +261,53 @@ button:hover {
     transform: rotate(360deg);
   }
 }
+.category-section {
+  margin-bottom: 3rem;
+}
+
+.category-section h2 {
+  margin-bottom: 1rem;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+/* Home.css */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.category-section {
+  margin-bottom: 4rem;
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.category-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #222;
+  border-left: 6px solid #6366f1;
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
