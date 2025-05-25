@@ -2,7 +2,7 @@ import React from "react";
 import ProductCard from "../components/ProductCard";
 import { useCart } from "../context/CardContext";
 
-function Recommended() {
+function Recommended({ bodyData}) {
   const [recommended, setRecommended] = React.useState([]);
   const [loading, setLoading] = React.useState(false); // Loader state
   const { cart } = useCart();
@@ -11,11 +11,6 @@ function Recommended() {
     const fetchRecommended = async () => {
       setLoading(true); // Start loading
       try {
-        const bodyData = {
-          item: [],
-        };
-        console.log(cart);
-        cart.forEach((items) => bodyData.item.push(items.id));
 
         const res = await fetch(
           "https://productrecommendation.cfapps.us10-001.hana.ondemand.com/also_buy",

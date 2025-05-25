@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useCart } from '../context/CardContext';
+import React, { useState } from "react";
+import { useCart } from "../context/CardContext";
 import Recommended from "../components/Recommended";
-import '../cart.css';
+import "../cart.css";
+import SimilarProducts from '../components/SimilarProducts';
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, total } = useCart();
@@ -12,8 +13,13 @@ const Cart = () => {
     setTimeout(() => {
       removeFromCart(item);
       setRemovingItem(null);
-    }, 500);  // Wait for the animation to complete before removing from cart
+    }, 500); // Wait for the animation to complete before removing from cart
   };
+  const bodyData = {
+    item: [],
+  };
+  console.log(cart);
+  cart.forEach((items) => bodyData.item.push(items.id));
 
   return (
     <div className="container">
@@ -25,8 +31,10 @@ const Cart = () => {
         <>
           <div className="cart-list">
             {cart.map((item, index) => (
-              <div 
-                className={`cart-card ${removingItem === item.id ? 'removing' : ''}`} 
+              <div
+                className={`cart-card ${
+                  removingItem === item.id ? "removing" : ""
+                }`}
                 key={index}
               >
                 <div className="cart-image"></div>
@@ -34,12 +42,19 @@ const Cart = () => {
                   <h3>{item.title || item.item}</h3>
                   <p>${item.price}</p>
                   <div className="cart-qty">
-                    <button onClick={() => updateQuantity(item, 'decrease')}>-</button>
+                    <button onClick={() => updateQuantity(item, "decrease")}>
+                      -
+                    </button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item, 'increase')}>+</button>
+                    <button onClick={() => updateQuantity(item, "increase")}>
+                      +
+                    </button>
                   </div>
                 </div>
-                <button onClick={() => handleRemove(item)} className="remove-btn">
+                <button
+                  onClick={() => handleRemove(item)}
+                  className="remove-btn"
+                >
                   Remove
                 </button>
               </div>
@@ -63,7 +78,9 @@ const Cart = () => {
             </div>
             <button className="checkout-btn">Proceed to Checkout</button>
           </div>
-          <Recommended />
+          {/* Similar Products Section */}
+          <SimilarProducts currentProductId={bodyData} />
+          <Recommended bodyData={bodyData}/>
         </>
       )}
     </div>
