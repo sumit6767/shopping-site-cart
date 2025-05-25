@@ -37,6 +37,12 @@ const Home = () => {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+
+      {/* Payment Button Section */}
+      {/* <div className="payment-section">
+        <h2>Complete Your Purchase</h2>
+        <PaymentButton />
+      </div> */}
     </div>
   );
 };

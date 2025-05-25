@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useCart } from "../context/CardContext";
 import Recommended from "../components/Recommended";
 import "../cart.css";
-import SimilarProducts from '../components/SimilarProducts';
+import SimilarProducts from "../components/SimilarProducts";
+import handlePayment from "../components/PaymentButton";
+import RecentlyBought from "../components/RecentlyBought";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, total } = useCart();
+  const { cart, removeFromCart, updateQuantity, total, removeAllFromCart } =
+    useCart();
   const [removingItem, setRemovingItem] = useState(null);
+  const [recentPurchaseOrder, setRecentPurchaseOrder] = useState(() => {
+    // Get cart from localStorage on first load
+    const savedCart = localStorage.getItem("recentPurchaseOrder");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
   const handleRemove = (item) => {
     setRemovingItem(item.id);
@@ -15,17 +23,20 @@ const Cart = () => {
       setRemovingItem(null);
     }, 500); // Wait for the animation to complete before removing from cart
   };
-  const bodyData = {
-    item: [],
-  };
+
+  const bodyData = useMemo(() => {
+    const items = cart.length ? cart : recentPurchaseOrder;
+    return {
+      item: items.map((item) => item.id),
+    };
+  }, [cart, recentPurchaseOrder]);
   console.log(cart);
-  cart.forEach((items) => bodyData.item.push(items.id));
 
   return (
     <div className="container">
       <h1>Your Cart</h1>
 
-      {cart.length === 0 ? (
+      {cart.length === 0 && recentPurchaseOrder.length === 0 ? (
         <p>Your cart is currently empty.</p>
       ) : (
         <>
@@ -61,26 +72,48 @@ const Cart = () => {
             ))}
           </div>
 
-          <div className="cart-summary">
-            <h2>Order Summary</h2>
-            <div className="summary-line">
-              <span>Subtotal</span>
-              <span>${total}</span>
+          {cart.length ? (
+            <div className="cart-summary">
+              <h2>Order Summary</h2>
+              <div className="summary-line">
+                <span>Subtotal</span>
+                <span>${total}</span>
+              </div>
+              <div className="summary-line">
+                <span>Shipping</span>
+                <span>$0.00</span>
+              </div>
+              <hr />
+              <div className="summary-line total-line">
+                <span>Total</span>
+                <span>${total}</span>
+              </div>
+              <button
+                className="checkout-btn"
+                onClick={() =>
+                  handlePayment(
+                    total,
+                    removeAllFromCart,
+                    setRecentPurchaseOrder,
+                    cart
+                  )
+                }
+              >
+                Proceed to Checkout
+              </button>
             </div>
-            <div className="summary-line">
-              <span>Shipping</span>
-              <span>$0.00</span>
-            </div>
-            <hr />
-            <div className="summary-line total-line">
-              <span>Total</span>
-              <span>${total}</span>
-            </div>
-            <button className="checkout-btn">Proceed to Checkout</button>
-          </div>
+          ) : (
+            <>
+              <p>
+                🎉 Woow! Your order was successful! 🛍️ Check out your recently
+                purchased items below 👇✨
+              </p>
+              <RecentlyBought products={recentPurchaseOrder} />
+            </>
+          )}
           {/* Similar Products Section */}
           <SimilarProducts currentProductId={bodyData} />
-          <Recommended bodyData={bodyData}/>
+          <Recommended bodyData={bodyData} />
         </>
       )}
     </div>
