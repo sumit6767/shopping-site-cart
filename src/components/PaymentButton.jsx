@@ -1,12 +1,12 @@
 import React from "react";
 import loadRazorpay from "../utils/loadRazorpay";
 
-const handlePayment = async (
+const handlePayment = async ({
   total,
   removeAllFromCart,
   setRecentPurchaseOrder,
-  cart
-) => {
+  cart,
+}) => {
   const res = await loadRazorpay();
 
   if (!res) {

@@ -5,10 +5,12 @@ import "../cart.css";
 import SimilarProducts from "../components/SimilarProducts";
 import handlePayment from "../components/PaymentButton";
 import RecentlyBought from "../components/RecentlyBought";
+import { useAuth } from "../context/AuthContext";
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, total, removeAllFromCart } =
     useCart();
+  const { user = "", login = false, logout = true } = useAuth();
   const [removingItem, setRemovingItem] = useState(null);
   const [recentPurchaseOrder, setRecentPurchaseOrder] = useState(() => {
     // Get cart from localStorage on first load
@@ -22,6 +24,16 @@ const Cart = () => {
       removeFromCart(item);
       setRemovingItem(null);
     }, 500); // Wait for the animation to complete before removing from cart
+  };
+
+  const handleCheckout = async (orderdetails) => {
+    // Simulate a successful order
+    if (user) {
+      handlePayment(orderdetails);
+    } else {
+      await login();
+      handlePayment(orderdetails);
+    }
   };
 
   const bodyData = useMemo(() => {
@@ -91,12 +103,12 @@ const Cart = () => {
               <button
                 className="checkout-btn"
                 onClick={() =>
-                  handlePayment(
+                  handleCheckout({
                     total,
                     removeAllFromCart,
                     setRecentPurchaseOrder,
-                    cart
-                  )
+                    cart,
+                  })
                 }
               >
                 Proceed to Checkout

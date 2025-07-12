@@ -52,12 +52,12 @@ const RecentlyBought = ({ products }) => {
               <p className="price">💵 Price: ${product.price.toFixed(2)}</p>
               <p className="quantity">📦 Quantity: {product.quantity}</p>
               <p className="subtotal">🧾 Subtotal: ${subtotal.toFixed(2)}</p>
-              <button
+              {/* <button
                 onClick={() => handleDownload([product])}
                 className="download-bill-button"
               >
                 ⬇️ Download Bill
-              </button>
+              </button> */}
             </div>
           );
         })}
