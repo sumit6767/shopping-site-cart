@@ -1,8 +1,10 @@
 // src/components/AuthStatus.js
+import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
 function AuthStatus() {
-  const { user, login, logout, authLoading } = useAuth(); // 👈 Access auth values
+  const { user, login, logout, manualLogout, authLoading, isManualLogin } =
+    useAuth(); // 👈 Access auth values
 
   console.log("App rendered", user?.accessToken); // Debugging line to check user state
 
@@ -18,12 +20,21 @@ function AuthStatus() {
     // Logged-in UI
     <div className="profile-dropdown">
       <div className="tooltip-container">
-        <img className="user-avatar" src={user.photoURL} alt="User" />
+        {isManualLogin && user? (
+          <div className="circle-container">
+            <div className="circle red">{user.displayName.charAt(0)}</div>
+          </div>
+        ) : (
+          <img className="user-avatar" src={user.photoURL} alt="User" />
+        )}
       </div>
       <div className="dropdown-menu">
         <p className="dropdown-name">Hi {user.displayName},</p>
         <p className="dropdown-email">{user.email}</p>
-        <button className="logout-btn" onClick={logout}>
+        <button
+          className="logout-btn"
+          onClick={isManualLogin ? manualLogout : logout}
+        >
           Logout
         </button>
       </div>

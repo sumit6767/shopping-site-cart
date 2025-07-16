@@ -16,10 +16,10 @@ const SimilarProducts = ({ currentProductId }) => {
               "Content-Type": "application/json",
               Accept: "application/json",
             },
-            body: JSON.stringify({ item: currentProductId.item[0] }),
+            body: JSON.stringify({ item: currentProductId?.item[0] }),
           }
         );
-        if (!response.ok) throw new Error("Network response was not ok");
+        if (!response.ok) console.log("Network response was not ok");
 
         const data = await response.json();
         setSimilarProducts(data.Similar_Products || []);

@@ -604,6 +604,18 @@ button:hover {
   animation: authspin 1s linear infinite;
 }
 
+.circle {
+  width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 1.7rem;
+}
 /* Spinner animation */
 @keyframes authspin {
   0% {

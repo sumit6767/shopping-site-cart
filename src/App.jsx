@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import { useCart } from "./context/CardContext"; // 👈 Import Cart context
 import AuthStatus from "./components/Authstatus";
+import AuthForm from "./pages/AuthForm";
 
 function App() {
   const { getTotalItemCount } = useCart();
@@ -36,6 +37,7 @@ function App() {
         <Route path="/" element={<Home />} />
         {/* Optional: Restrict access to /cart if not logged in */}
         <Route path="/cart" element={<Cart />} />
+        <Route path="/authform" element={<AuthForm />} />
       </Routes>
     </Router>
   );

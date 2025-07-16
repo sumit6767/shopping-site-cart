@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useCart } from "../context/CardContext";
 import Recommended from "../components/Recommended";
 import "../cart.css";
@@ -6,17 +6,35 @@ import SimilarProducts from "../components/SimilarProducts";
 import handlePayment from "../components/PaymentButton";
 import RecentlyBought from "../components/RecentlyBought";
 import { useAuth } from "../context/AuthContext";
+import { getRecentPurchases } from "../api/apiconsume"; // Adjust the import path as necessary
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, total, removeAllFromCart } =
     useCart();
-  const { user = "", login = false, logout = true } = useAuth();
+  const { user = "", login } = useAuth();
   const [removingItem, setRemovingItem] = useState(null);
-  const [recentPurchaseOrder, setRecentPurchaseOrder] = useState(() => {
-    // Get cart from localStorage on first load
-    const savedCart = localStorage.getItem("recentPurchaseOrder");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+  const [recentPurchaseOrder, setRecentPurchaseOrder] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchRecentPurchases = async () => {
+        try {
+          const response = await getRecentPurchases(user.uid || "1234");
+          if (response.status && response.status !== 500) {
+            setRecentPurchaseOrder(response.data.Recent_Purchases);
+            setLoading(false);
+          }  
+        } catch (error) {
+          console.error("Failed to fetch recent purchases:", error);
+        } finally {
+          setLoading(false);
+        }
+    };
+
+    fetchRecentPurchases();
+  }, [user]);
 
   const handleRemove = (item) => {
     setRemovingItem(item.id);
@@ -31,8 +49,8 @@ const Cart = () => {
     if (user) {
       handlePayment(orderdetails);
     } else {
-      await login();
-      handlePayment(orderdetails);
+      navigate("/authform");
+      // handlePayment(orderdetails);
     }
   };
 
@@ -48,7 +66,7 @@ const Cart = () => {
     <div className="container">
       <h1>Your Cart</h1>
 
-      {cart.length === 0 && recentPurchaseOrder.length === 0 ? (
+      {cart.length === 0 && recentPurchaseOrder.length === 0 && !loading ? (
         <p>Your cart is currently empty.</p>
       ) : (
         <>
@@ -108,11 +126,17 @@ const Cart = () => {
                     removeAllFromCart,
                     setRecentPurchaseOrder,
                     cart,
+                    user
                   })
                 }
               >
                 Proceed to Checkout
               </button>
+            </div>
+          ) : loading ? (
+            <div className="loader">
+              <div className="spinner"></div>
+              <p>Loading recent purchases...</p>
             </div>
           ) : (
             <>

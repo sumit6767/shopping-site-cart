@@ -1,10 +1,12 @@
 import loadRazorpay from "../utils/loadRazorpay";
+import { submitOrderHistory } from "../api/apiconsume"; // Adjust the import path as necessary
 
 const handlePayment = async ({
   total,
   removeAllFromCart,
   setRecentPurchaseOrder,
   cart,
+  user,
 }) => {
   const res = await loadRazorpay();
 
@@ -50,6 +52,7 @@ const handlePayment = async ({
 
       // // Fetch order details
       // const order = await razorpay.orders.fetch(razorpay_order_id);
+      submitOrderHistory({uid : user?.uid, data: [...cart]})
       setRecentPurchaseOrder((prevcart) => {
         localStorage.setItem("recentPurchaseOrder", JSON.stringify([...cart]));
         return [...cart];
