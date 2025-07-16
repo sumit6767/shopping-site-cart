@@ -1,4 +1,3 @@
-import React from "react";
 import loadRazorpay from "../utils/loadRazorpay";
 
 const handlePayment = async ({
@@ -20,7 +19,7 @@ const handlePayment = async ({
   // }).then((t) => t.json());
 
   const options = {
-    key: "rzp_test_Vlx8CuR49aea43", // from Razorpay dashboard
+    key: process.env.REACT_APP_rajorpayKey, // from Razorpay dashboard
     amount: `${total * 100}`, // Amount in paise (Razorpay uses paise)
     currency: "INR",
     name: "Groceries Store",

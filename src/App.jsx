@@ -17,7 +17,7 @@ function App() {
     <Router>
       <nav>
         <Link to="/">
-          <h1>🛍️ MyStore</h1>
+          <h1><i>🛍️ Daily Store</i></h1>
         </Link>
         <div className="group-icon">
           <Link to="/">Home</Link>
