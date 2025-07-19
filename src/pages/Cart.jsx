@@ -9,8 +9,14 @@ import { getRecentPurchases } from "../api/apiconsume"; // Adjust the import pat
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, total, removeAllFromCart, setOrderDetails } =
-    useCart();
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    total,
+    removeAllFromCart,
+    setOrderDetails,
+  } = useCart();
   const { user = "", login } = useAuth();
   const [removingItem, setRemovingItem] = useState(null);
   const [recentPurchaseOrder, setRecentPurchaseOrder] = useState([]);
@@ -25,7 +31,7 @@ const Cart = () => {
           if (response.status && response.status !== 500) {
             setRecentPurchaseOrder(response.data?.Recent_Purchases || {});
             setLoading(false);
-          }  
+          }
         } catch (error) {
           console.error("Failed to fetch recent purchases:", error);
         } finally {
@@ -59,6 +65,20 @@ const Cart = () => {
     }
   };
 
+  const refreshRecentOrders = async () => {
+    setLoading(true);
+    try {
+      const response = await getRecentPurchases(user?.uid || "1234");
+      if (response.status && response.status !== 500) {
+        setRecentPurchaseOrder(response.data?.Recent_Purchases || {});
+      }
+    } catch (error) {
+      console.error("Failed to refresh recent purchases:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const bodyData = useMemo(() => {
     const items = cart.length ? cart : recentPurchaseOrder?.items || [];
     return {
@@ -71,7 +91,7 @@ const Cart = () => {
     <div className="container">
       <h1>Your Cart</h1>
 
-      {cart.length === 0 && !(recentPurchaseOrder?.items) && !loading ? (
+      {cart.length === 0 && !recentPurchaseOrder?.items && !loading ? (
         <p>Your cart is currently empty.</p>
       ) : (
         <>
@@ -131,7 +151,7 @@ const Cart = () => {
                     removeAllFromCart,
                     setRecentPurchaseOrder,
                     cart,
-                    user
+                    user,
                   })
                 }
               >
@@ -149,7 +169,10 @@ const Cart = () => {
                 🎉 Woow! Your order was successful! 🛍️ Check out your recently
                 purchased items below 👇✨
               </p>
-              <RecentlyBought products={recentPurchaseOrder } />
+              <button onClick={refreshRecentOrders} className="refresh-btn">
+                🔄
+              </button>
+              <RecentlyBought products={recentPurchaseOrder} />
             </>
           )}
           {/* Similar Products Section */}
