@@ -10,6 +10,9 @@ import Cart from "./pages/Cart";
 import { useCart } from "./context/CardContext"; // 👈 Import Cart context
 import AuthStatus from "./components/Authstatus";
 import AuthForm from "./pages/AuthForm";
+import SideNav from "./components/Navigation";
+import OrderHistory from "./components/Orderhistory";
+import CheckoutForm from "./components/CheckoutFrom";
 
 function App() {
   const { getTotalItemCount } = useCart();
@@ -17,8 +20,11 @@ function App() {
   return (
     <Router>
       <nav>
+        <SideNav isLogged={true} />
         <Link to="/">
-          <h1><i>🛍️ Daily Store</i></h1>
+          <h1>
+            <i>🛍️ Daily Store</i>
+          </h1>
         </Link>
         <div className="group-icon">
           <Link to="/">Home</Link>
@@ -38,6 +44,8 @@ function App() {
         {/* Optional: Restrict access to /cart if not logged in */}
         <Route path="/cart" element={<Cart />} />
         <Route path="/authform" element={<AuthForm />} />
+        <Route path="/orders" element={<OrderHistory userId="1234" />} />
+        <Route path="/checkout" element={<CheckoutForm />} />
       </Routes>
     </Router>
   );

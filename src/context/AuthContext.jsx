@@ -10,7 +10,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isManualLogin, setIsManualLogin] = useState(false);
-
   useEffect(() => {
     const isManualLoginRaw = Cookies.get("isManualLogin");
     setIsManualLogin(isManualLoginRaw === "true");
@@ -60,7 +59,9 @@ export function AuthProvider({ children }) {
     }
     return {};
   };
-  const logout = () => signOut(auth);
+  const logout = async () => {
+    await signOut(auth)
+  };
 
   const manualLogout = () => {
     try {

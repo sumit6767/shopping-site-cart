@@ -39,7 +39,7 @@ nav h1 {
 nav a {
   color: #fff;
   text-decoration: none;
-  margin-left: 1.5rem;
+  margin-left: 2.5rem;
   font-weight: 500;
   transition: color 0.3s ease;
 }
@@ -56,7 +56,7 @@ nav a:hover {
 .container {
   max-width: 1200px;
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 1.5rem;
 }
 
 /* Product Grid */
@@ -475,7 +475,7 @@ button:hover {
 
 /* Hidden by default */
 .dropdown-menu {
-  display: none;
+  visibility: hidden;
   position: absolute;
   top: 52px;
   right: 0;
@@ -489,7 +489,8 @@ button:hover {
 
 /* Show on hover */
 .profile-dropdown:hover .dropdown-menu {
-  display: block;
+  visibility: visible;
+  transition: all 1s ease;
 }
 
 /* Dropdown Text */
@@ -616,6 +617,158 @@ button:hover {
     padding: 20px;
     font-size: 1.7rem;
 }
+
+/* Three-dot menu toggle */
+.menu-toggle {
+  position: fixed;
+  left: 20px;
+  width: 25px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1001;
+  transition: left 0.3s ease;
+}
+
+.menu-toggle div {
+  height: 4px;
+  background: white;
+  border-radius: 3px;
+  transition: 0.3s;
+}
+
+/* Sidebar */
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100%;
+  background: linear-gradient(to bottom right, #2c3e50, #3498db);
+  color: white;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.2);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  justify-content: flex-start;
+}
+
+.sidenav.open {
+  left: 0;
+}
+
+.sidenav a,
+.sidenav button {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  padding: 10px 15px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease, padding-left 0.2s ease;
+  margin: 30px 0 0 0;
+}
+
+.sidenav a:hover,
+.sidenav button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  padding-left: 25px;
+  border-radius: 4px;
+}
+
+.order-history-container {
+  max-width: 900px;
+  margin: 30px auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #1a1a1a;
+  padding: 0 15px;
+}
+
+.order-history-container h2 {
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 2rem;
+  border-bottom: 2px solid #f0c14b;
+  padding-bottom: 10px;
+  color: #111;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 0.1);
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 15px rgb(0 0 0 / 0.2);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.order-items {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.order-item {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+  color: #333;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.item-title {
+  font-weight: 600;
+}
+
+.item-category {
+  font-style: italic;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.item-quantity,
+.item-price {
+  text-align: right;
+  font-weight: 600;
+}
+
+.loading,
+.error,
+.no-orders {
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+}
+
+
 /* Spinner animation */
 @keyframes authspin {
   0% {

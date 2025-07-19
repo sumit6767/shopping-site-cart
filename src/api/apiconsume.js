@@ -10,8 +10,7 @@ export const manualLogin = async (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   });
-
-  return response.json();
+  return {status: response.status, data: await response.json()};
 };
 
 // 2. Register new user (manual)
@@ -47,13 +46,13 @@ export const loginWithGoogle = async (firebaseUser) => {
 };
 
 // 4. Save order history
-export const submitOrderHistory = async ({ uid, data }) => {
-  const response = await fetch(`${BASE_URL}/order_history`, {
+export const submitOrderHistory = async ({ uid, transaction_id, mobile_number, address, data }) => {
+  const response = await fetch(`${BASE_URL}/store_order_history`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ uid, data }),
+    body: JSON.stringify({ uid, transaction_id, mobile_number, address, data }),
   });
 
   return response.json();
@@ -94,3 +93,50 @@ export const getAddresses = async (userId) => {
   const response = await fetch(`${BASE_URL}/get_addresses/${userId}`);
   return response.json();
 };
+
+export const fetchOrderHistory = async (userId) => {
+  const response = await fetch(`${BASE_URL}/order_history`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user_id: userId }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return { status: response.status, data: errorData };
+  }
+
+  return { status: response.status, data: await response.json() };
+};
+
+// 8. Fetch user profile by user ID
+export const getUserProfile = async (userId) => {
+  const response = await fetch(`${BASE_URL}/get_profile/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return { status: response.status, data: errorData };
+  }
+
+  const data = await response.json();
+  return { status: response.status, data: data.User_Data || {} };
+};
+
+// src/api/api.js
+export const sendOrderMail = async ({ user_id, order_id }) => {
+  const response = await fetch(`${BASE_URL}/send_mail`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id, order_id }),
+  });
+  const data = await response.json();
+  return { status: response.status, data };
+};
+

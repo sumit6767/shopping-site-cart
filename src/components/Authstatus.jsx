@@ -6,8 +6,6 @@ function AuthStatus() {
   const { user, login, logout, manualLogout, authLoading, isManualLogin } =
     useAuth(); // 👈 Access auth values
 
-  console.log("App rendered", user?.accessToken); // Debugging line to check user state
-
   if (authLoading) {
     return (
       <div className="loading-wrapper">
@@ -22,7 +20,7 @@ function AuthStatus() {
       <div className="tooltip-container">
         {isManualLogin && user? (
           <div className="circle-container">
-            <div className="circle red">{user.displayName.charAt(0)}</div>
+            <div className="circle red">{user.displayName?.charAt(0)}</div>
           </div>
         ) : (
           <img className="user-avatar" src={user.photoURL} alt="User" />

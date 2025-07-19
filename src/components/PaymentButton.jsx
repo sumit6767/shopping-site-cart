@@ -1,5 +1,5 @@
 import loadRazorpay from "../utils/loadRazorpay";
-import { submitOrderHistory } from "../api/apiconsume"; // Adjust the import path as necessary
+import { submitOrderHistory, sendOrderMail} from "../api/apiconsume"; // Adjust the import path as necessary
 
 const handlePayment = async ({
   total,
@@ -7,6 +7,8 @@ const handlePayment = async ({
   setRecentPurchaseOrder,
   cart,
   user,
+  mobile_number,
+  address
 }) => {
   const res = await loadRazorpay();
 
@@ -26,7 +28,7 @@ const handlePayment = async ({
     currency: "INR",
     name: "Groceries Store",
     description: "Test Transaction",
-    handler: function (response) {
+    handler: async function (response) {
       // This gets called when payment is successful
       const paymentData = {
         razorpay_payment_id: response.razorpay_payment_id,
@@ -52,13 +54,16 @@ const handlePayment = async ({
 
       // // Fetch order details
       // const order = await razorpay.orders.fetch(razorpay_order_id);
-      submitOrderHistory({uid : user?.uid, data: [...cart]})
-      setRecentPurchaseOrder((prevcart) => {
-        localStorage.setItem("recentPurchaseOrder", JSON.stringify([...cart]));
-        return [...cart];
-      });
+      await submitOrderHistory({uid : user?.uid, transaction_id: paymentData.razorpay_payment_id,  mobile_number, address, data: [...cart]})
       removeAllFromCart(); // Clear cart after successful payment
-      console.log("Payment successful:", response);
+      setTimeout(() => {
+        sendOrderMail({
+          user_id: user?.uid,
+          order_id: paymentData.razorpay_payment_id,})
+      }, 500)
+      setTimeout(async () => {
+        await setRecentPurchaseOrder( {transaction_id: paymentData.razorpay_payment_id, mobile_number, address, items: [...cart]});
+      }, 300);
     },
     prefill: {
       name: "Sumit Vishwakarma",
