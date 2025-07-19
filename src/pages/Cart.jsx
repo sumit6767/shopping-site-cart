@@ -1,16 +1,15 @@
 import { useState, useMemo, useEffect } from "react";
-import { useCart } from "../context/CardContext";
+import { useCart, setOrderDetails } from "../context/CardContext";
 import Recommended from "../components/Recommended";
 import "../cart.css";
 import SimilarProducts from "../components/SimilarProducts";
-import handlePayment from "../components/PaymentButton";
 import RecentlyBought from "../components/RecentlyBought";
 import { useAuth } from "../context/AuthContext";
 import { getRecentPurchases } from "../api/apiconsume"; // Adjust the import path as necessary
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, total, removeAllFromCart } =
+  const { cart, removeFromCart, updateQuantity, total, removeAllFromCart, setOrderDetails } =
     useCart();
   const { user = "", login } = useAuth();
   const [removingItem, setRemovingItem] = useState(null);
@@ -20,10 +19,11 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchRecentPurchases = async () => {
+      if (user) {
         try {
-          const response = await getRecentPurchases(user.uid || "1234");
+          const response = await getRecentPurchases(user?.uid || "1234");
           if (response.status && response.status !== 500) {
-            setRecentPurchaseOrder(response.data.Recent_Purchases);
+            setRecentPurchaseOrder(response.data?.Recent_Purchases || {});
             setLoading(false);
           }  
         } catch (error) {
@@ -31,6 +31,10 @@ const Cart = () => {
         } finally {
           setLoading(false);
         }
+      } else {
+        setRecentPurchaseOrder({});
+        setLoading(false);
+      }
     };
 
     fetchRecentPurchases();
@@ -47,7 +51,8 @@ const Cart = () => {
   const handleCheckout = async (orderdetails) => {
     // Simulate a successful order
     if (user) {
-      handlePayment(orderdetails);
+      await setOrderDetails(orderdetails);
+      navigate("/checkout");
     } else {
       navigate("/authform");
       // handlePayment(orderdetails);
@@ -55,7 +60,7 @@ const Cart = () => {
   };
 
   const bodyData = useMemo(() => {
-    const items = cart.length ? cart : recentPurchaseOrder;
+    const items = cart.length ? cart : recentPurchaseOrder?.items || [];
     return {
       item: items.map((item) => item.id),
     };
@@ -66,7 +71,7 @@ const Cart = () => {
     <div className="container">
       <h1>Your Cart</h1>
 
-      {cart.length === 0 && recentPurchaseOrder.length === 0 && !loading ? (
+      {cart.length === 0 && !(recentPurchaseOrder?.items) && !loading ? (
         <p>Your cart is currently empty.</p>
       ) : (
         <>
@@ -144,7 +149,7 @@ const Cart = () => {
                 🎉 Woow! Your order was successful! 🛍️ Check out your recently
                 purchased items below 👇✨
               </p>
-              <RecentlyBought products={recentPurchaseOrder} />
+              <RecentlyBought products={recentPurchaseOrder } />
             </>
           )}
           {/* Similar Products Section */}
