@@ -81,9 +81,5 @@ const handleDownload = (billItem) => {
   const element = document.createElement("a");
   const file = new Blob([generatePDF(billItem)], { type: "text/plain" });
   element.href = URL.createObjectURL(file);
-  element.download = "your-bill.txt";
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
 };
 export default handleDownload;
