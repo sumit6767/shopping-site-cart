@@ -16,7 +16,7 @@ const RecentlyBought = ({ products }) => {
 
           return (
             <div key={index} className="product-card-recent">
-              <h3>{`${emojiMap.get(product.categories)} ${product.title}`}</h3>
+              <h3>{`${emojiMap.get(product.categories) || "📦"} ${product.title}`}</h3>
               <p className="price">💵 Price: ${product.price.toFixed(2)}</p>
               <p className="quantity">📦 Quantity: {product.quantity}</p>
               <p className="subtotal">🧾 Subtotal: ${subtotal.toFixed(2)}</p>
