@@ -305,7 +305,6 @@ button:hover {
 }
 
 .recently-bought {
-  margin: 3rem 0;
   padding: 2rem;
   background: linear-gradient(to bottom right, #f7f9fc, #ffffff);
   border-radius: 12px;

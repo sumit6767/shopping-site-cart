@@ -8,7 +8,8 @@ const handlePayment = async ({
   cart,
   user,
   mobile_number,
-  address
+  address,
+  navigate
 }) => {
   const res = await loadRazorpay();
 
@@ -64,6 +65,7 @@ const handlePayment = async ({
       setTimeout(async () => {
         await setRecentPurchaseOrder( {transaction_id: paymentData.razorpay_payment_id, mobile_number, address, items: [...cart]});
       }, 300);
+      navigate("/cart"); // Redirect to order history page
     },
     prefill: {
       name: "Sumit Vishwakarma",

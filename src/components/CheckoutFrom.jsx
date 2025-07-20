@@ -8,6 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CardContext";
 import handlePayment from "../components/PaymentButton";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 // Configure Leaflet default icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -85,16 +86,23 @@ const CheckoutForm = ({}) => {
   useEffect(() => {
     const fetchSaved = async () => {
       if (!user_id) return setAddrLoading(false);
-      if (!orderDetails.cart || orderDetails?.cart?.length === 0 )  return navigate("/cart");
+      if (!orderDetails.cart || orderDetails?.cart?.length === 0)
+        return navigate("/cart");
       try {
         setMobileNumber(user?.mobileNumber || "");
         const data = await getAddresses(user_id);
-        const firstPincode = data?.addresses?.[0]?.address?.split(", ")[0] || "";
+        const firstPincode =
+          data?.addresses?.[0]?.address?.split(", ")[0] || "";
         setSavedAddresses(
           data?.addresses?.map((address) => {
             return {
               address: address.address || "",
-              pincode: (firstPincode.length === 6 && Number(firstPincode)) || address.address.split(", ").filter((a) => Number(a) && a.length === 6) || "",
+              pincode:
+                (firstPincode.length === 6 && Number(firstPincode)) ||
+                address.address
+                  .split(", ")
+                  .filter((a) => Number(a) && a.length === 6) ||
+                "",
             };
           }) || []
         );
@@ -123,9 +131,14 @@ const CheckoutForm = ({}) => {
     setMapEnabled(true);
   };
 
+  const addressOptions = savedAddresses.map((addr, i) => ({
+    value: i,
+    label: `📍 ${addr.address.slice(0, 50)}...`,
+  }));
   // Handle saved address selection
   const handleSavedSelect = async (e) => {
-    const idx = e.target.value;
+    console.log("Selected address index:", e);
+    const idx = e.value;
     if (idx === "") return;
     const selected = savedAddresses[idx];
     setMobileNumber(selected.mobileNumber || mobileNumber);
@@ -161,16 +174,16 @@ const CheckoutForm = ({}) => {
         });
       }
       setPointerEvents("none");
-      await handlePayment({
+      const answer = await handlePayment({
         ...orderDetails,
         mobile_number: mobileNumber,
         address,
+        navigate,
       });
     } catch (err) {
       setPointerEvents("auto");
-      setError("Failed to save address. Please try again.");
+      setError("Failed to place order. Please try again.");
     } finally {
-      navigate("/cart");
     }
   };
 
@@ -187,14 +200,19 @@ const CheckoutForm = ({}) => {
       ) : savedAddresses.length > 0 ? (
         <div className="form-group">
           <label className="label">📚 Select Saved Address:</label>
-          <select className="input" onChange={handleSavedSelect}>
+          <Select
+            className="input"
+            options={addressOptions}
+            onChange={handleSavedSelect}
+            style={{ maxHeight: "500px", overflowY: "auto" }}
+          >
             <option value="">-- Choose --</option>
             {savedAddresses.map((addr, i) => (
               <option key={i} value={i}>
                 📍 {addr.address.slice(0, 50)}...
               </option>
             ))}
-          </select>
+          </Select>
         </div>
       ) : null}
 
@@ -275,7 +293,7 @@ const CheckoutForm = ({}) => {
           disabled={!mobileNumber || !address || !pincode}
           className="button"
         >
-          ✅ Save Address
+          ✅ Place Order
         </button>
       </form>
     </div>
