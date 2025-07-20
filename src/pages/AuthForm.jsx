@@ -130,7 +130,7 @@ if (typeof document !== "undefined") {
 
 export default function AuthForm() {
   const navigate = useNavigate();
-  const { user, setUser, login, isManualLogin, setIsManualLogin } = useAuth();
+  const { user, setUser, login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
@@ -303,7 +303,7 @@ export default function AuthForm() {
       <div style={pageLoader ? pagespinnerStyle : { display: "none" }}>
         <p></p>
       </div>
-      <div style={{ ...styles.container, pointerEvents: `${pointerEvents}` }}>
+      <div className="form-login" style={{ ...styles.container, pointerEvents: `${pointerEvents}` }}>
         <h2 style={styles.heading}>{isLogin ? "🔐 Login" : "📝 Register"}</h2>
         <form onSubmit={handleSubmit}>
           {!isLogin && (
