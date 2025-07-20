@@ -1,4 +1,4 @@
-import { use, useState, useEffect, containerRef } from "react";
+import { use, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import Auth context
 
@@ -52,7 +52,6 @@ const SideNav = () => {
   return (
     <>
       <div
-        ref={containerRef}
         className="menu-toggle"
         style={{ left: isOpen ? "150px" : "20px" }}
         onClick={toggleMenu}
