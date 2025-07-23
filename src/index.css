@@ -879,6 +879,7 @@ button:hover {
   .cart-card,
   .cart-item {
     flex-direction: column;
+    justify-content: center;
     gap: 10px;
   }
 
@@ -886,7 +887,12 @@ button:hover {
     font-size: 1.2rem;
     text-align: center;
   }
-
+  .cart-details {
+    text-align: center;
+  }
+  .cart-qty {
+    justify-content: center;
+  }
   footer {
     padding: 1rem;
   }
@@ -933,4 +939,3 @@ button:hover {
     left: 0;
   }
 }
-
