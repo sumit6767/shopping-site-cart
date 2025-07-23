@@ -849,7 +849,7 @@ button:hover {
   }
 
   .product-card {
-    height: auto;
+    width: 90%;
   }
 
   .recently-bought {
