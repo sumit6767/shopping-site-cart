@@ -106,7 +106,7 @@ const Cart = () => {
                 <div className="cart-image"></div>
                 <div className="cart-details">
                   <h3>{item.title || item.item}</h3>
-                  <p>${item.price}</p>
+                  <p>&#x20B9;{item.price}</p>
                   <div className="cart-qty">
                     <button onClick={() => updateQuantity(item, "decrease")}>
                       -
@@ -132,16 +132,16 @@ const Cart = () => {
               <h2>Order Summary</h2>
               <div className="summary-line">
                 <span>Subtotal</span>
-                <span>${total}</span>
+                <span>&#x20B9;{total}</span>
               </div>
               <div className="summary-line">
                 <span>Shipping</span>
-                <span>$0.00</span>
+                <span>&#x20B9;0.00</span>
               </div>
               <hr />
               <div className="summary-line total-line">
                 <span>Total</span>
-                <span>${total}</span>
+                <span>&#x20B9;{total}</span>
               </div>
               <button
                 className="checkout-btn"

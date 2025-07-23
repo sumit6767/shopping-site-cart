@@ -49,9 +49,9 @@ function generatePDF(data) {
 
     doc.text(`#${index + 1}: ${item.title}`, 20, y);
     doc.text(`Category: ${item.categories}`, 20, y + 6);
-    doc.text(`Price: $${(item.price / 100)}`, 20, y + 12);
+    doc.text(`Price: Rs. ${(item.price)}`, 20, y + 12);
     doc.text(`Quantity: ${item.quantity}`, 20, y + 18);
-    doc.text(`Subtotal: $${(subtotal / 100)}`, 120, y + 18);
+    doc.text(`Subtotal: Rs. ${(subtotal)}`, 120, y + 18);
 
     y += 34;
   });
@@ -61,7 +61,7 @@ function generatePDF(data) {
   doc.setFontSize(14);
   doc.setFillColor(220, 220, 255);
   doc.rect(15, y, 180, 15, "F");
-  doc.text(`TOTAL: $${(total / 100)}`, 105, y + 10, {
+  doc.text(`TOTAL: Rs. ${(total)}`, 105, y + 10, {
     align: "center",
   });
   y += 30;

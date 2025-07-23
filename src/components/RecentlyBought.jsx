@@ -13,13 +13,14 @@ const RecentlyBought = ({ products }) => {
       <div className="product-list">
         {products.items?.map((product, index) => {
           const subtotal = product.price * product.quantity;
+          console.log("Product:", product);
 
           return (
             <div key={index} className="product-card-recent">
               <h3>{`${emojiMap.get(product.categories) || "📦"} ${product.title}`}</h3>
-              <p className="price">💵 Price: ${product.price.toFixed(2)}</p>
+              <p className="price">💵 Price: &#x20B9;{product.price.toFixed(2)}</p>
               <p className="quantity">📦 Quantity: {product.quantity}</p>
-              <p className="subtotal">🧾 Subtotal: ${subtotal.toFixed(2)}</p>
+              <p className="subtotal">🧾 Subtotal: &#x20B9;{subtotal.toFixed(2)}</p>
               {/* <button
                 onClick={() => handleDownload([product])}
                 className="download-bill-button"
