@@ -891,16 +891,6 @@ button:hover {
     padding: 1rem;
   }
 
-  .category-toggle-bar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .category-toggle {
-    width: 100%;
-    text-align: center;
-  }
-
   .sidenav {
     padding: 2rem 1rem;
   }
