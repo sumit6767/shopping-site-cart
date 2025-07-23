@@ -56,7 +56,7 @@ const Cart = () => {
 
   const handleCheckout = async (orderdetails) => {
     // Simulate a successful order
-    if (user) {
+    if (user) { 
       await setOrderDetails(orderdetails);
       navigate("/checkout");
     } else {
@@ -106,7 +106,7 @@ const Cart = () => {
                 <div className="cart-image"></div>
                 <div className="cart-details">
                   <h3>{item.title || item.item}</h3>
-                  <p>&#x20B9;{item.price}</p>
+                  <p>&#x20B9;{item.finalPrice}</p>
                   <div className="cart-qty">
                     <button onClick={() => updateQuantity(item, "decrease")}>
                       -
@@ -150,7 +150,10 @@ const Cart = () => {
                     total,
                     removeAllFromCart,
                     setRecentPurchaseOrder,
-                    cart,
+                    cart: cart.map((item) => ({
+                      ...item,
+                      price: item.finalPrice || item.price,
+                    })),
                     user,
                   })
                 }

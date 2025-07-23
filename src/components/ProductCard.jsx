@@ -17,7 +17,7 @@ const ProductCard = ({ product }) => {
         <span className="original-price">₹{product.price}</span>
         <span className="discount">{discount}% OFF</span>
       </p>
-      <button onClick={() => addToCart(product)}>Add to Cart</button>
+      <button onClick={() => addToCart({...product, finalPrice: finalPrice})}>Add to Cart</button>
     </div>
   );
 };

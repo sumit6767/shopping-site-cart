@@ -74,7 +74,7 @@ const OrderHistory = ({ userId }) => {
                   {item.emojiicon} {item.categories}
                 </div>
                 <div className="item-quantity">Qty: {item.quantity}</div>
-                <div className="item-price">₹{item.price}</div>
+                <div className="item-price">₹{item.finalPrice}</div>
               </div>
             ))}
           </div>
