@@ -894,6 +894,9 @@ button:hover {
   .sidenav {
     padding: 2rem 1rem;
   }
+  .category-toggle {
+    padding: 1rem;
+  }
 
   .sidenav a,
   .sidenav button {
