@@ -477,6 +477,7 @@ button:hover {
 .dropdown-menu {
   visibility: hidden;
   position: absolute;
+  text-align: center;
   top: 52px;
   right: 0;
   background-color: white;
@@ -504,6 +505,7 @@ button:hover {
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 12px;
+  overflow: auto;
 }
 
 /* Logout button inside dropdown */
@@ -937,5 +939,6 @@ button:hover {
   .dropdown-menu {
     right: auto;
     left: 0;
+    width: 75%;
   }
 }
