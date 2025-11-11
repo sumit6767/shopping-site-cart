@@ -1,5 +1,5 @@
 // src/api/api.js
-const BASE_URL = "https://grocery.cfapps.us10-001.hana.ondemand.com/"; // Update this when deploying
+const BASE_URL = "https://grocery1.cfapps.us10-001.hana.ondemand.com/"; // Update this when deploying
 
 // 1. Manual login
 export const manualLogin = async (email, password) => {

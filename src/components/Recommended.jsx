@@ -13,7 +13,7 @@ function Recommended({ bodyData}) {
       try {
 
         const res = await fetch(
-          "https://productrecommendation.cfapps.us10-001.hana.ondemand.com/also_buy",
+          "https://productrecommendation1.cfapps.us10-001.hana.ondemand.com/also_buy",
           {
             method: "POST",
             headers: {
